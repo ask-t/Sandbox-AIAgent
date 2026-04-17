@@ -17,4 +17,4 @@ fi
 
 PROMPT="$(cat "${INSTRUCTION_FILE}")"
 
-gemini --yolo --model gemini-2.0-flash "${PROMPT}"
+gemini --yolo "${PROMPT}"
