@@ -28,4 +28,6 @@ jobs:
         run: bash scripts/setup-google-auth.sh
 
       - name: Run Gemini Agent - Gmail Monitor
+        env:
+          GOOGLE_GENAI_USE_GCA: "true"
         run: bash scripts/run-gemini-agent.sh instructions/gmail-monitor.md

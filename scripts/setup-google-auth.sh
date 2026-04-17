@@ -3,22 +3,14 @@
 # without an interactive browser flow.
 set -e
 
-mkdir -p ~/.gemini
-
-cat > ~/.gemini/oauth_creds.json << EOF
+# Application Default Credentials (used by GOOGLE_GENAI_USE_GCA=true)
+mkdir -p ~/.config/gcloud
+cat > ~/.config/gcloud/application_default_credentials.json << EOF
 {
   "client_id": "${GOOGLE_OAUTH_CLIENT_ID}",
   "client_secret": "${GOOGLE_OAUTH_CLIENT_SECRET}",
   "refresh_token": "${GOOGLE_REFRESH_TOKEN}",
   "type": "authorized_user"
-}
-EOF
-
-# Point Gemini CLI to the credentials file
-mkdir -p ~/.config/gemini
-cat > ~/.config/gemini/config.json << EOF
-{
-  "credentialsFile": "${HOME}/.gemini/oauth_creds.json"
 }
 EOF
 

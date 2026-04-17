@@ -38,4 +38,5 @@ jobs:
       - name: Run Gemini Agent - AI News
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GOOGLE_GENAI_USE_GCA: "true"
         run: bash scripts/run-gemini-agent.sh instructions/ai-news.md
