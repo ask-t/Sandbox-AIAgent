@@ -32,14 +32,14 @@ def build_message(from_addr: str, to_addr: str, subject: str, body: str) -> Emai
 
 
 def send_gmail(to_addr: str, subject: str, body: str) -> None:
-    gmail_address = os.getenv("GMAIL_ADDRESS")
-    app_password = os.getenv("GMAIL_APP_PASSWORD")
+    gmail_address_env = os.getenv("GMAIL_ADDRESS")
 
-    if not gmail_address or not app_password:
+    if not gmail_address_env or ":" not in gmail_address_env:
         raise ValueError(
-            "環境変数 GMAIL_ADDRESS と GMAIL_APP_PASSWORD を設定してください。"
+            "環境変数 GMAIL_ADDRESS を 'email:password' 形式で設定してください。"
         )
 
+    gmail_address, app_password = gmail_address_env.split(":", 1)
     message = build_message(gmail_address, to_addr, subject, body)
 
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as smtp:
