@@ -3,7 +3,11 @@
 set -e
 
 mkdir -p ~/.gemini
-
 echo "${GEMINI_TOKEN_JSON}" > ~/.gemini/oauth_creds.json
 
-echo "Gemini OAuth credentials restored."
+# Write .env so Gemini CLI's sandboxed tools can read credentials via load_dotenv()
+cat > .env << EOF
+GMAIL_ADDRESS=${GMAIL_ADDRESS}
+EOF
+
+echo "Gemini OAuth credentials and .env restored."
