@@ -2,7 +2,7 @@ name: Gmail Monitor (Periodic)
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # 2時間ごと
+    - cron: '0 1,7,13,19 * * *'  # 6時間ごと (JST 10:00, 16:00, 22:00, 04:00)
   workflow_dispatch:
 
 jobs:
