@@ -5,6 +5,9 @@ on:
     - cron: '50 22 * * *'  # 毎日 JST 7:50 (UTC 22:50 前日)
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   run-agent:
     runs-on: ubuntu-latest
