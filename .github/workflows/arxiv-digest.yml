@@ -1,0 +1,54 @@
+name: arXiv AI Papers Digest (Daily)
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 毎日 JST 8:00 (UTC 23:00 前日)
+  workflow_dispatch:
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache Gemini CLI
+        id: cache-gemini
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm-global
+          key: gemini-cli-v1
+
+      - name: Install Gemini CLI
+        if: steps.cache-gemini.outputs.cache-hit != 'true'
+        run: |
+          npm config set prefix ~/.npm-global
+          npm install -g @google/gemini-cli
+
+      - name: Add Gemini CLI to PATH
+        run: echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup Google OAuth
+        env:
+          GEMINI_TOKEN_JSON: ${{ secrets.GEMINI_TOKEN_JSON }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+        run: bash scripts/setup-google-auth.sh
+
+      - name: Run Gemini Agent - arXiv Digest
+        env:
+          GOOGLE_GENAI_USE_GCA: "true"
+        run: bash scripts/run-gemini-agent.sh instructions/arxiv-digest.md
